@@ -1,0 +1,28 @@
+import RPi.GPIO as GPIO
+import time
+
+#Definine o modo de numeração dos pinos
+GPIO.setmode(GPIO.BOARD)
+
+#Definine os pinos de entrada e saída
+pin_entrada = 11
+pin_saida = 13
+
+#Configura os pinos
+GPIO.setup(pin_entrada, GPIO.IN)
+GPIO.setup(pin_saida, GPIO.OUT)
+
+def verificar_mudanca_estado():
+    estado_anterior = GPIO.input(pin_entrada)
+    while True:
+        estado_atual = GPIO.input(pin_entrada)
+        if estado_atual != estado_anterior:
+            GPIO.output(pin_saida, GPIO.HIGH)
+            	time.sleep(1)
+            GPIO.output(pin_saida, GPIO.LOW)
+            	estado_anterior = estado_atual
+
+try:
+    verificar_mudanca_estado()
+except KeyboardInterrupt:
+    GPIO.cleanup()
